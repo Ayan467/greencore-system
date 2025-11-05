@@ -1,0 +1,40 @@
+const mongoose = require('mongoose');
+
+const financialRecordSchema = new mongoose.Schema({
+    projectId: {
+        type: String,
+        required: true
+    },
+    transactionType: {
+        type: String,
+        enum: ['income', 'expense'],
+        required: true
+    },
+    amount: {
+        type: Number,
+        required: true
+    },
+    category: {
+        type: String,
+        enum: ['equipment', 'labor', 'materials', 'administration', 'marketing', 'other'],
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    transactionDate: {
+        type: Date,
+        default: Date.now
+    },
+    vendor: String,
+    status: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: 'pending'
+    }
+}, {
+    timestamps: true
+});
+
+module.exports = mongoose.model('FinancialRecord', financialRecordSchema);
