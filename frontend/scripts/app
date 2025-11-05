@@ -1,0 +1,242 @@
+// Green City Application - Frontend JavaScript
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the application
+    initApp();
+});
+
+function initApp() {
+    // Set up event listeners
+    setupEventListeners();
+    
+    // Load initial data
+    loadDashboardData();
+    loadProjects();
+    
+    // Initialize charts
+    initCharts();
+}
+
+function setupEventListeners() {
+    // Login button
+    const loginBtn = document.getElementById('login-btn');
+    const loginModal = document.getElementById('login-modal');
+    const closeModal = document.querySelector('.close');
+    const loginForm = document.getElementById('login-form');
+    
+    loginBtn.addEventListener('click', function() {
+        loginModal.style.display = 'block';
+    });
+    
+    closeModal.addEventListener('click', function() {
+        loginModal.style.display = 'none';
+    });
+    
+    window.addEventListener('click', function(event) {
+        if (event.target === loginModal) {
+            loginModal.style.display = 'none';
+        }
+    });
+    
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleLogin();
+    });
+    
+    // Get started button
+    const getStartedBtn = document.getElementById('get-started');
+    getStartedBtn.addEventListener('click', function() {
+        document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // Load more projects
+    const loadProjectsBtn = document.getElementById('load-projects');
+    loadProjectsBtn.addEventListener('click', loadMoreProjects);
+}
+
+// Dashboard functionality
+function loadDashboardData() {
+    // In a real app, this would fetch data from the backend
+    // For now, we'll use mock data
+    const mockData = {
+        carbon: 245,
+        greenSpace: 38,
+        energy: 42,
+        waste: 65
+    };
+    
+    document.getElementById('carbon-value').textContent = `${mockData.carbon} tCO2`;
+    document.getElementById('green-space-value').textContent = `${mockData.greenSpace}%`;
+    document.getElementById('energy-value').textContent = `${mockData.energy}%`;
+    document.getElementById('waste-value').textContent = `${mockData.waste}%`;
+}
+
+function initCharts() {
+    const ctx = document.getElementById('sustainability-chart').getContext('2d');
+    
+    // Mock data for the chart
+    const data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [
+            {
+                label: 'Carbon Footprint (tCO2)',
+                data: [280, 270, 260, 255, 250, 245],
+                borderColor: '#ff6b6b',
+                backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                tension: 0.4,
+                fill: true
+            },
+            {
+                label: 'Green Space (%)',
+                data: [30, 32, 33, 35, 36, 38],
+                borderColor: '#4caf50',
+                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                tension: 0.4,
+                fill: true
+            },
+            {
+                label: 'Renewable Energy (%)',
+                data: [30, 33, 35, 37, 40, 42],
+                borderColor: '#2196f3',
+                backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                tension: 0.4,
+                fill: true
+            }
+        ]
+    };
+    
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Sustainability Metrics Over Time'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    };
+    
+    new Chart(ctx, config);
+}
+
+// Projects functionality
+function loadProjects() {
+    // Mock projects data
+    const projects = [
+        {
+            id: 1,
+            title: 'Urban Forest Expansion',
+            description: 'Planting 10,000 trees across the city to increase green cover and improve air quality.',
+            status: 'active',
+            progress: 65
+        },
+        {
+            id: 2,
+            title: 'Solar Panel Installation',
+            description: 'Installing solar panels on municipal buildings to reduce carbon footprint.',
+            status: 'active',
+            progress: 40
+        },
+        {
+            id: 3,
+            title: 'Bike Lane Network',
+            description: 'Expanding the city bike lane network to encourage sustainable transportation.',
+            status: 'planning',
+            progress: 20
+        },
+        {
+            id: 4,
+            title: 'Community Composting',
+            description: 'Setting up neighborhood composting facilities to reduce organic waste.',
+            status: 'completed',
+            progress: 100
+        }
+    ];
+    
+    displayProjects(projects);
+}
+
+function displayProjects(projects) {
+    const container = document.getElementById('projects-container');
+    container.innerHTML = '';
+    
+    projects.forEach(project => {
+        const projectCard = createProjectCard(project);
+        container.appendChild(projectCard);
+    });
+}
+
+function createProjectCard(project) {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    
+    const statusClass = `status-${project.status}`;
+    
+    card.innerHTML = `
+        <div class="project-image">
+            ${project.title}
+        </div>
+        <div class="project-content">
+            <h3>${project.title}</h3>
+            <span class="project-status ${statusClass}">${project.status}</span>
+            <p>${project.description}</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: ${project.progress}%"></div>
+            </div>
+            <div class="progress-text">${project.progress}% Complete</div>
+        </div>
+    `;
+    
+    return card;
+}
+
+function loadMoreProjects() {
+    // In a real app, this would fetch more projects from the backend
+    alert('Loading more projects...');
+}
+
+// Authentication functionality
+function handleLogin() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    // In a real app, this would send a request to the backend
+    console.log('Login attempt:', { email, password });
+    
+    // For demo purposes, just close the modal
+    document.getElementById('login-modal').style.display = 'none';
+    
+    // Show a success message (in a real app, this would be conditional)
+    alert('Login successful! Welcome to Green City.');
+}
+
+// Utility function to make API calls
+async function apiCall(endpoint, options = {}) {
+    const baseUrl = 'http://localhost:3000/api'; // Adjust based on your backend
+    const url = `${baseUrl}${endpoint}`;
+    
+    const defaultOptions = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    
+    const config = { ...defaultOptions, ...options };
+    
+    try {
+        const response = await fetch(url, config);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('API call failed:', error);
+        throw error;
+    }
+}
