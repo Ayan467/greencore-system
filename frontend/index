@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green City - Sustainable Urban Planning</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">🌿 Green City</h1>
+                <ul class="nav-menu">
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#analytics">Analytics</a></li>
+                    <li><a href="#community">Community</a></li>
+                    <li><a href="#" id="login-btn">Login</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h2>Building Sustainable Cities Together</h2>
+                <p>Track, manage, and optimize green initiatives in your community</p>
+                <button class="cta-button" id="get-started">Get Started</button>
+            </div>
+        </section>
+
+        <section id="dashboard">
+            <div class="container">
+                <h2>City Sustainability Dashboard</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>Carbon Footprint</h3>
+                        <div class="metric-value" id="carbon-value">245 tCO2</div>
+                        <div class="metric-change positive">↓ 12%</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Green Space</h3>
+                        <div class="metric-value" id="green-space-value">38%</div>
+                        <div class="metric-change positive">↑ 5%</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Renewable Energy</h3>
+                        <div class="metric-value" id="energy-value">42%</div>
+                        <div class="metric-change positive">↑ 8%</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Waste Recycled</h3>
+                        <div class="metric-value" id="waste-value">65%</div>
+                        <div class="metric-change negative">↓ 3%</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="sustainability-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2>Active Green Projects</h2>
+                <div class="projects-grid" id="projects-container">
+                    <!-- Projects will be loaded dynamically -->
+                </div>
+                <button class="load-more" id="load-projects">Load More Projects</button>
+            </div>
+        </section>
+
+        <section id="community">
+            <div class="container">
+                <h2>Community Initiatives</h2>
+                <div class="initiatives-list">
+                    <div class="initiative-card">
+                        <h3>Urban Gardening</h3>
+                        <p>Join our community gardens and grow your own food</p>
+                        <div class="participants">245 participants</div>
+                    </div>
+                    <div class="initiative-card">
+                        <h3>Clean Energy Workshops</h3>
+                        <p>Learn how to implement solar and wind solutions</p>
+                        <div class="participants">189 participants</div>
+                    </div>
+                    <div class="initiative-card">
+                        <h3>Waste Management</h3>
+                        <p>Help improve recycling rates in your neighborhood</p>
+                        <div class="participants">312 participants</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Green City Initiative. Building sustainable urban environments.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login to Green City</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/app.js"></script>
+</body>
+</html>
