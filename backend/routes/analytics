@@ -1,0 +1,89 @@
+const express = require('express');
+const Metric = require('../model/Metric');
+const Project = require('../model/Project');
+const router = express.Router();
+
+// Get sustainability metrics
+router.get('/metrics', async (req, res) => {
+    try {
+        const { timeframe = 'month' } = req.query;
+        
+        // Calculate date range based on timeframe
+        let startDate = new Date();
+        switch (timeframe) {
+            case 'week':
+                startDate.setDate(startDate.getDate() - 7);
+                break;
+            case 'month':
+                startDate.setMonth(startDate.getMonth() - 1);
+                break;
+            case 'year':
+                startDate.setFullYear(startDate.getFullYear() - 1);
+                break;
+            default:
+                startDate.setMonth(startDate.getMonth() - 1);
+        }
+        
+        // Get metrics from database
+        const metrics = await Metric.find({
+            date: { $gte: startDate }
+        }).sort({ date: 1 });
+        
+        // Calculate summary statistics
+        const totalProjects = await Project.countDocuments();
+        const activeProjects = await Project.countDocuments({ status: 'active' });
+        const completedProjects = await Project.countDocuments({ status: 'completed' });
+        
+        // Calculate environmental impact (mock data for demo)
+        const carbonReduction = 245; // tons
+        const treesPlanted = 12500;
+        const energySaved = 42000; // kWh
+        
+        res.json({
+            metrics,
+            summary: {
+                totalProjects,
+                activeProjects,
+                completedProjects,
+                carbonReduction,
+                treesPlanted,
+                energySaved
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
+// Get project statistics
+router.get('/projects/stats', async (req, res) => {
+    try {
+        const stats = await Project.aggregate([
+            {
+                $group: {
+                    _id: '$status',
+                    count: { $sum: 1 },
+                    totalBudget: { $sum: '$budget' }
+                }
+            }
+        ]);
+        
+        const categoryStats = await Project.aggregate([
+            {
+                $group: {
+                    _id: '$category',
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+        
+        res.json({
+            statusStats: stats,
+            categoryStats: categoryStats
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
+module.exports = router;
