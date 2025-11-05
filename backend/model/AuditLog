@@ -1,0 +1,25 @@
+const mongoose = require('mongoose');
+
+const auditLogSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        required: true
+    },
+    action: {
+        type: String,
+        required: true
+    },
+    resource: {
+        type: String,
+        required: true
+    },
+    resourceId: String,
+    previousValues: mongoose.Schema.Types.Mixed,
+    newValues: mongoose.Schema.Types.Mixed,
+    ipAddress: String,
+    userAgent: String
+}, {
+    timestamps: true
+});
+
+module.exports = mongoose.model('AuditLog', auditLogSchema);
